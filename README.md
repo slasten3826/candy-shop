@@ -16,6 +16,26 @@ measured state is authoritative for facts about the machine.
 This is a public repository. Interface names, IP addresses, keys, and capacity
 figures are deliberately excluded. `tools/redact-check.sh` enforces this.
 
+## Two copies, one truth
+
+This tree is the public copy. A machine-local companion at
+`local/facts.local.md` holds every value stripped from it: interface names,
+addresses, disk capacities and usage. That directory is gitignored and is
+never published.
+
+```text
+public copy   this tree        redacted, committed, pushed
+local copy    local/           unredacted, ignored, stays on the machine
+```
+
+The rule for keeping both in sync: when a fact is measured, write it into the
+public text in generic form and append the exact value to
+`local/facts.local.md` under its matching section. Never promote a local value
+into the public tree. Where redaction happened, the public text carries a
+`Local lookup:` note pointing at the section of the local file that holds the
+exact value, so the two copies resolve together without either becoming
+wrong.
+
 ## Layers
 
 ```text

@@ -43,10 +43,29 @@ is_self() {
   esac
 }
 
+# The local companion is unredacted by design and must never be committed.
+# .gitignore covers the normal case; this catches it when a path is forced.
+is_local_only() {
+  case "$1" in
+    local/*|*/local/*|*.local.md) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
 scan_file() {
   local f="$1" label regex hits
   is_binary "$f" && return 0
   is_self "$f" && return 0
+  if is_local_only "$f"; then
+    if [ "$found" -eq 0 ]; then
+      echo "redact-check: sensitive content detected" >&2
+      echo >&2
+    fi
+    found=1
+    printf '%s\n' "  [local-only file] $f" >&2
+    printf '%s\n' "      this file is unredacted by design and must not be published" >&2
+    return 0
+  fi
   while IFS=$'\t' read -r label regex; do
     [ -z "$label" ] && continue
     hits=$(grep -nEI -- "$regex" "$f" 2>/dev/null | head -3)

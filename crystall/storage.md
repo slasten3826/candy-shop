@@ -41,6 +41,10 @@ All Btrfs mounts use `compress=zstd:1`.
 
 Live capacity figures are intentionally omitted from this public snapshot.
 
+> Local lookup: per-device capacity and usage figures are in
+> `local/facts.local.md`, section "Storage capacities and usage". That
+> directory is gitignored and never published.
+
 ## /etc/fstab (live)
 
 ```fstab
