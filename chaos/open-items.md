@@ -33,9 +33,16 @@ VPN tunnel now present
 external vault now mounted
 ```
 
----
+## Resolved after measurement
 
-machines only. not for humans.
+```text
+Root filesystem growth 11 GiB -> 328 GiB between the predecessor measurement
+and the snapshot. Explained on 2026-09-12: it is not corruption and not a
+snapshot pile-up. It is game and media content, dominated by PortProton
+prefixes under the home directory and bulk media on the HDD. Details and
+figures are in local/facts.local.md, section "Root growth"; figures are a
+capacity matter and stay out of the public tree.
+```
 
 ---
 
