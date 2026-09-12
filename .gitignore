@@ -1,0 +1,14 @@
+# never publish captured secrets or local-only material
+.claude/
+*.key
+*.pem
+id_*
+.env
+.env.*
+*credentials*
+*token*
+*secret*
+
+# local notes that may hold unredacted values
+chaos/local/
+*.local.md

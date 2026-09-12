@@ -1,0 +1,176 @@
+{
+  "id": "candy-shop.snapshot",
+  "version": "1.0.0",
+  "snapshot_date": "2026-09-12",
+  "mode": "live_read_only_measurement",
+  "audience": "machines",
+  "layers": {
+    "chaos": {
+      "id": "chaos",
+      "glyph": "⋯",
+      "role": "raw observations and open items",
+      "rule": "preserve raw continuity"
+    },
+    "table": {
+      "id": "table",
+      "glyph": "⊞",
+      "role": "accepted policies and machine role",
+      "rule": "state policy, not measurement"
+    },
+    "crystall": {
+      "id": "crystall",
+      "glyph": "◈",
+      "role": "exact current configuration",
+      "rule": "document only confirmed live configuration"
+    },
+    "manifest": {
+      "id": "manifest",
+      "glyph": "▲",
+      "role": "verified state with dates",
+      "rule": "measurement plus date, never unverified claim"
+    }
+  },
+  "reading_order": [
+    "table/machine-role.md",
+    "manifest/audit-2026-09-12.md",
+    "crystall/README.md",
+    "table/README.md",
+    "chaos/README.md",
+    "index.snapshot.json"
+  ],
+  "identity": {
+    "hostname": "candy-shop",
+    "os": "Manjaro Linux 26.1.2",
+    "kernel": "7.1.13-2-MANJARO",
+    "architecture": "x86-64",
+    "timezone": "Europe/Samara",
+    "installed_packages": 1363
+  },
+  "hardware": {
+    "board": "ASRock B450 Gaming K4",
+    "firmware": "P8.03",
+    "cpu": "AMD Ryzen 5 5600X",
+    "cpu_cores_threads": "6/12",
+    "ram_usable_gib": 31,
+    "gpu": "NVIDIA GeForce GTX 1080",
+    "gpu_vram_mib": 8192,
+    "gpu_compute_capability": 6.1
+  },
+  "machine_role": [
+    "games",
+    "local_model_inference",
+    "parameter_efficient_fine_tuning",
+    "bulk_local_storage"
+  ],
+  "modules": {
+    "system": "crystall/system.md",
+    "gpu": "crystall/gpu.md",
+    "storage": "crystall/storage.md",
+    "swap": "crystall/swap.md",
+    "desktop": "crystall/desktop.md",
+    "network": "crystall/network.md",
+    "local_models": "crystall/local-models.md",
+    "gaming": "crystall/gaming.md",
+    "controller": "crystall/controller.md"
+  },
+  "policies": {
+    "machine_role": "table/machine-role.md",
+    "nvidia_pascal": "table/nvidia-pascal-policy.md",
+    "storage": "table/storage-policy.md",
+    "swap": "table/swap-policy.md",
+    "gaming": "table/gaming-policy.md",
+    "controller": "table/controller-policy.md",
+    "local_model": "table/local-model-policy.md",
+    "service": "table/service-policy.md"
+  },
+  "verifications": [
+    {
+      "area": "full_audit",
+      "path": "manifest/audit-2026-09-12.md",
+      "date": "2026-09-12"
+    },
+    {
+      "area": "gpu",
+      "path": "manifest/gpu-verification-2026-09-12.md",
+      "date": "2026-09-12"
+    },
+    {
+      "area": "storage",
+      "path": "manifest/storage-verification-2026-09-12.md",
+      "date": "2026-09-12"
+    },
+    {
+      "area": "swap",
+      "path": "manifest/swap-verification-2026-09-12.md",
+      "date": "2026-09-12"
+    },
+    {
+      "area": "network",
+      "path": "manifest/network-verification-2026-09-12.md",
+      "date": "2026-09-12"
+    },
+    {
+      "area": "local_models",
+      "path": "manifest/local-models-verification-2026-09-12.md",
+      "date": "2026-09-12"
+    },
+    {
+      "area": "gaming",
+      "path": "manifest/gaming-verification-2026-09-12.md",
+      "date": "2026-09-12"
+    }
+  ],
+  "measured_state": {
+    "gpu_driver": "580.178.04",
+    "cuda_toolkit": false,
+    "ollama": {
+      "version": "0.33.3",
+      "backend": "vulkan",
+      "active": true,
+      "models": ["qwen3:8b"]
+    },
+    "swap": {
+      "path": "/swap/swapfile",
+      "size_gib": 16,
+      "zswap": true,
+      "swappiness": 60
+    },
+    "firewall": "none_active",
+    "sshd": "active",
+    "vpn": "active_tunnel",
+    "session": {
+      "type": "x11",
+      "desktop": "KDE Plasma 6.7.4"
+    }
+  },
+  "unmeasured": [
+    "ram_module_details",
+    "btrfs_subvolume_list",
+    "vulkaninfo_enumerations",
+    "ollama_end_to_end_inference",
+    "controller_input_read",
+    "dns_and_routing",
+    "full_package_manifest"
+  ],
+  "open_decisions": [
+    "vpn_always_on",
+    "host_firewall",
+    "timeshift_snapshots",
+    "gaming_observability_tools"
+  ],
+  "provenance": {
+    "read_only": true,
+    "changes_made": false,
+    "denied_waits_for_root": [
+      "btrfs subvolume list /",
+      "dmidecode -t memory"
+    ],
+    "redacted_for_public_repo": [
+      "interface_names",
+      "ip_addresses",
+      "disk_capacity_figures"
+    ],
+    "predecessor_tree": "~/codex/candy-shop",
+    "predecessor_measured": "2026-08-21..2026-09-03"
+  }
+}
