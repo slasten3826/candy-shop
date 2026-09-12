@@ -12,3 +12,7 @@ id_*
 # local notes that may hold unredacted values
 chaos/local/
 *.local.md
+
+# local session pointer, meaningless outside this machine
+resume
+
