@@ -1,0 +1,10 @@
+# Grant the local user access to the 8BitDo Retro 18 Numpad input device.
+#
+# The numpad exposes two interfaces; processglyphd.py grabs the keyboard one
+# ("8BitDo Retro 18 Numpad Keyboard", event16). Without this rule the device is
+# root:input 0660 and the user cannot open it.
+#
+# Match is by device name, so it works over the USB dongle and would also work
+# over Bluetooth. Ported from Slastpad, where the group is also "slasten".
+
+KERNEL=="event*", SUBSYSTEM=="input", ATTRS{name}=="8BitDo Retro 18 Numpad Keyboard", GROUP="slasten", MODE="0660"

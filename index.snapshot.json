@@ -71,7 +71,8 @@
     "network": "crystall/network.md",
     "local_models": "crystall/local-models.md",
     "gaming": "crystall/gaming.md",
-    "controller": "crystall/controller.md"
+    "controller": "crystall/controller.md",
+    "processglyph_numpad": "crystall/processglyph-numpad.md"
   },
   "policies": {
     "machine_role": "table/machine-role.md",
@@ -81,7 +82,8 @@
     "gaming": "table/gaming-policy.md",
     "controller": "table/controller-policy.md",
     "local_model": "table/local-model-policy.md",
-    "service": "table/service-policy.md"
+    "service": "table/service-policy.md",
+    "processglyph_numpad": "table/processglyph-numpad-policy.md"
   },
   "verifications": [
     {
@@ -118,6 +120,11 @@
       "area": "gaming",
       "path": "manifest/gaming-verification-2026-09-12.md",
       "date": "2026-09-12"
+    },
+    {
+      "area": "processglyph_numpad",
+      "path": "manifest/processglyph-verification-2026-09-13.md",
+      "date": "2026-09-13"
     }
   ],
   "measured_state": {

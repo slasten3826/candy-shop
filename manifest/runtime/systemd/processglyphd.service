@@ -1,0 +1,15 @@
+[Unit]
+Description=ProcessGlyph numpad daemon (8BitDo Retro 18 -> ProcessLang glyphs)
+After=graphical-session.target
+
+[Service]
+Type=simple
+# The start wrapper resolves DISPLAY and XAUTHORITY from the live KDE session.
+# SDDM writes its X authority to a per-login path under /tmp, so neither value
+# can be hardcoded here.
+ExecStart=%h/.local/bin/processglyphd-start.sh
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=default.target
