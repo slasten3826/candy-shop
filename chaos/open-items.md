@@ -18,10 +18,16 @@ Full installed package manifest                  (only count recorded: 1363)
 ## Not decided
 
 ```text
-Is the VPN tunnel meant to be always-on?
 Should a host firewall be configured, given sshd is open and unfiltered?
-Should Timeshift snapshots be scheduled for the Btrfs system disk?
 Should gamemode / mangohud be added for gaming?
+```
+
+Settled by the operator on 2026-09-13:
+
+```text
+VPN always on      yes, by necessity. The carrier blocks large parts of the
+                   internet; the tunnel is what makes the machine usable.
+Btrfs snapshots    already taken before package updates. No schedule needed.
 ```
 
 ## Waiting for a reboot
@@ -68,9 +74,8 @@ external vault now mounted
 Root filesystem growth 11 GiB -> 328 GiB between the predecessor measurement
 and the snapshot. Explained on 2026-09-12: it is not corruption and not a
 snapshot pile-up. It is game and media content, dominated by PortProton
-prefixes under the home directory and bulk media on the HDD. Details and
-figures are in local/facts.local.md, section "Root growth"; figures are a
-capacity matter and stay out of the public tree.
+prefixes under the home directory and bulk media on the HDD. Figures are in
+crystall/storage.md, section "Capacity and usage".
 ```
 
 ---

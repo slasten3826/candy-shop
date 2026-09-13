@@ -44,6 +44,17 @@ The numpad exposes two interfaces; only the keyboard one is grabbed:
 "8BitDo Retro 18 Numpad Keyboard"  event16  kbd      grabbed
 ```
 
+Device identity, for matching the udev rule and confirming the right numpad:
+
+```text
+USB id        2dc8:5204  (8BitDo Retro 18 Numpad)
+serial        10379DA4D4
+transport     2.4 GHz USB dongle, not Bluetooth
+```
+
+Note that `event15` and `event16` are whatever the kernel assigns at this boot.
+Match the device by name or by USB id, never by event node.
+
 ## Glyph map
 
 ```text

@@ -1,4 +1,4 @@
-# never publish captured secrets or local-only material
+# never publish secrets
 .claude/
 *.key
 *.pem
@@ -9,7 +9,8 @@ id_*
 *token*
 *secret*
 
-# local notes that may hold unredacted values
+# machine-local material, not published
+local/
 chaos/local/
 *.local.md
 

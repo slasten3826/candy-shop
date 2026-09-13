@@ -12,12 +12,10 @@ root="$(cd "$script_dir/.." && pwd)"
 targets=("$@")
 [ ${#targets[@]} -eq 0 ] && targets=("$root")
 
-# Each pattern: LABEL<TAB>REGEX
-# IPv4 uses non-word boundaries so version-like tokens such as 1.0.0.87-2 are
-# not mistaken for addresses.
+# Every pattern except the first uses portable ERE. The first needs a negative
+# lookahead to exempt this machine's own private ranges, which only PCRE offers,
+# so it is handled separately below rather than through this loop.
 patterns=$(cat <<'EOF'
-IPv4 address	(^|[^0-9A-Za-z._-])((25[0-5]|2[0-4][0-9]|1?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9]?[0-9])([^0-9A-Za-z._-]|$)
-IPv6 address	([0-9a-fA-F]{0,4}:){3,}[0-9a-fA-F]{1,4}
 MAC address	([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}
 private key	BEGIN [A-Z ]*PRIVATE KEY
 ssh key material	ssh-(rsa|ed25519|dss) AAAA
@@ -28,6 +26,60 @@ token	(tok|secret|api[-_]?key)[-_]?\s*[:=]\s*\S+
 wireless SSID	SSID\s*[:=]\s*\S+
 EOF
 )
+
+# This machine's LAN is private and belongs to this tree, so `192.168.31.42`
+# and other RFC1918 addresses pass. Two things do not:
+#
+#   - the VPN tunnel's subnet, whose addresses identify a network exit point
+#     rather than describing this machine's LAN;
+#   - any routable IPv4 literal.
+#
+# They are scanned by two separate functions because a negative lookahead cannot
+# carve a hole inside an allowed range.
+TUNNEL_SUBNET='172\.19'
+
+scan_tunnel_subnet() {
+  local f="$1" hits
+  hits=$(grep -nPI -- "(?<![0-9A-Za-z._-])(?:${TUNNEL_SUBNET})\.(?:(?:25[0-5]|2[0-4][0-9]|1?[0-9]?[0-9])\.)(?:25[0-5]|2[0-4][0-9]|1?[0-9]?[0-9])(?![0-9A-Za-z._-])" "$f" 2>/dev/null | head -3)
+  [ -n "$hits" ] || return 0
+  if [ "$found" -eq 0 ]; then
+    echo "redact-check: sensitive content detected" >&2
+    echo >&2
+  fi
+  found=1
+  printf '%s\n' "  [tunnel address] $f" >&2
+  printf '%s\n' "$hits" | sed 's/^/      /' >&2
+}
+
+scan_public_ipv4() {
+  local f="$1" hits
+  hits=$(grep -nPI -- '(?<![0-9A-Za-z._-])(?!(?:10|127|192\.168|169\.254|100\.(?:6[4-9]|[7-9][0-9]|1[0-2][0-7])|172\.(?:1[6-9]|2[0-9]|3[01]))\.)(?:(?:25[0-5]|2[0-4][0-9]|1?[0-9]?[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|1?[0-9]?[0-9])(?![0-9A-Za-z._-])' "$f" 2>/dev/null | head -3)
+  [ -n "$hits" ] || return 0
+  if [ "$found" -eq 0 ]; then
+    echo "redact-check: sensitive content detected" >&2
+    echo >&2
+  fi
+  found=1
+  printf '%s\n' "  [public IPv4] $f" >&2
+  printf '%s\n' "$hits" | sed 's/^/      /' >&2
+}
+
+# Link-local addresses are published for the LAN interface but not for the
+# tunnel, so the tunnel's is scanned separately.
+LAN_LINKLOCAL='289a:7b79'
+
+scan_tunnel_linklocal() {
+  local f="$1" hits
+  hits=$(grep -nPI -- "(?<![0-9a-fA-F:])fe80:(?![0-9a-fA-F:]*:${LAN_LINKLOCAL})[0-9a-fA-F:]{4,}" "$f" 2>/dev/null | head -3)
+  [ -n "$hits" ] || return 0
+  if [ "$found" -eq 0 ]; then
+    echo "redact-check: sensitive content detected" >&2
+    echo >&2
+  fi
+  found=1
+  printf '%s\n' "  [tunnel link-local] $f" >&2
+  printf '%s\n' "$hits" | sed 's/^/      /' >&2
+}
 
 is_binary() {
   case "$1" in
@@ -43,8 +95,8 @@ is_self() {
   esac
 }
 
-# The local companion is unredacted by design and must never be committed.
-# .gitignore covers the normal case; this catches it when a path is forced.
+# Machine-local material that is never published. .gitignore covers the normal
+# case; this catches it when a path is forced onto the index.
 is_local_only() {
   case "$1" in
     local/*|*/local/*|*.local.md) return 0 ;;
@@ -63,9 +115,12 @@ scan_file() {
     fi
     found=1
     printf '%s\n' "  [local-only file] $f" >&2
-    printf '%s\n' "      this file is unredacted by design and must not be published" >&2
+    printf '%s\n' "      this file is machine-local by design and must not be published" >&2
     return 0
   fi
+  scan_tunnel_subnet "$f"
+  scan_public_ipv4 "$f"
+  scan_tunnel_linklocal "$f"
   while IFS=$'\t' read -r label regex; do
     [ -z "$label" ] && continue
     hits=$(grep -nEI -- "$regex" "$f" 2>/dev/null | head -3)

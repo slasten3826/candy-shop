@@ -39,11 +39,48 @@ All Btrfs mounts use `compress=zstd:1`.
 /tmp          tmpfs, mode 1777, noatime
 ```
 
-Live capacity figures are intentionally omitted from this public snapshot.
+## Capacity and usage
 
-> Local lookup: per-device capacity and usage figures are in
-> `local/facts.local.md`, section "Storage capacities and usage". That
-> directory is gitignored and never published.
+```text
+/                 328 GiB used of 476.6 GiB
+VAULT_512         706 MiB used
+/home/slasten/hdd bulk HDD, roughly 20 GiB used at first measurement
+```
+
+For comparison, the predecessor measured `/` at 11 GiB used on 2026-08-21. The
+growth is game and media content, not corruption and not a snapshot pile-up:
+
+```text
+/home/slasten total        309 GiB
+  PortProton               106 GiB
+    data/prefixes           99 GiB   (Wine prefixes, one per installed game)
+    data/dist              3.7 GiB
+    data/tmp               3.1 GiB
+  work                     578 MiB
+  pic                      197 MiB
+  codex                    143 MiB
+  downloads                126 MiB
+/var                      7.5 GiB
+```
+
+Roughly 99 GiB sits under the single directory `PortProton/data/prefixes`, from
+installing games. That plus ordinary home growth accounts for the jump.
+
+The bulk HDD, a separate filesystem mounted under the home path, held:
+
+```text
+/home/slasten/hdd total    379 GiB
+  nsfw                     217 GiB
+  Games                    113 GiB
+  downloads                 49 GiB
+  Steam                     12 KiB
+```
+
+Here `du -x` on `/home/slasten` reports 309 GiB while `/home/slasten/hdd`
+reports 379 GiB, because the HDD is mounted inside the home path but is its own
+filesystem. The 328 GiB figure above is the root Btrfs filesystem itself.
+
+Not investigated: whether `PortProton/data/tmp` (3.1 GiB) is safe to clear.
 
 ## /etc/fstab (live)
 

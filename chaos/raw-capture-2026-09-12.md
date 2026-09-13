@@ -57,11 +57,13 @@ kioworker TIFF "missing ImageLength" on 2026-09-12 — one malformed image file
 kdeconnectd holds a large number of UDP sockets — normal for its discovery mode
 ```
 
-## Public-repo redaction note
+## Machine fact policy
 
-Interface names, IP addresses, and disk capacity figures were captured during
-the snapshot but are intentionally excluded from this public repository. The
-raw values remain only in the operator's local notes, not here.
+Interface names, IP addresses, host paths, device serials, and disk capacity
+figures are machine facts and are published here, the same way the Slastpad
+repository publishes its own. What stays out of this repository is secret
+material: API keys, tokens, passwords, private keys, `.env` files. See
+`crystall/network.md` and `crystall/storage.md` for the values themselves.
 
 ## Environment note
 

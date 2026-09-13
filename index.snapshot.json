@@ -172,10 +172,17 @@
       "btrfs subvolume list /",
       "dmidecode -t memory"
     ],
-    "redacted_for_public_repo": [
+    "published_machine_facts": [
       "interface_names",
       "ip_addresses",
+      "host_paths",
+      "device_serials",
       "disk_capacity_figures"
+    ],
+    "excluded_from_public_repo": [
+      "secrets_and_keys",
+      "private_key_material",
+      "dotenv_files"
     ],
     "predecessor_tree": "~/codex/candy-shop",
     "predecessor_measured": "2026-08-21..2026-09-03"
