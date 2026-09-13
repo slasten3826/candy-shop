@@ -52,8 +52,9 @@ Four layers, in the order a machine should read them:
 - [`chaos/`](chaos/) — raw observations, failures, open questions.
 - [`table/`](table/) — accepted policies and the machine role.
 - [`crystall/`](crystall/) — how each subsystem is actually configured.
-- [`manifest/`](manifest/) — verified state with dates, plus a snapshot of
-  selected runtime artifacts under [`manifest/runtime/`](manifest/runtime/).
+- [`manifest/`](manifest/) — verified state with dates, a snapshot of selected
+  runtime artifacts under [`manifest/runtime/`](manifest/runtime/), and
+  [`restore.md`](manifest/restore.md), the one instruction-shaped document.
 
 ```text
 chaos -> table -> crystall -> manifest
@@ -91,6 +92,10 @@ table/                         policy, per subsystem
 chaos/                         raw capture, open items, history
 index.snapshot.json            machine-readable index
 ```
+
+If the system disk is gone and you are rebuilding, stop and read
+[`manifest/restore.md`](manifest/restore.md) instead. It is the only document
+here written as instructions rather than as observation.
 
 ## Current System Shape
 
