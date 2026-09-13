@@ -16,6 +16,21 @@ bulk local storage
 Everything configured on this machine serves one of those four. Manjaro Linux
 and KDE Plasma are the accepted base.
 
+## Why The Stack Is Left At Defaults
+
+This machine runs Manjaro KDE without a hand-built desktop, and that is a
+decision rather than a shrug. The operator built the opposite kind of machine
+elsewhere: a ThinkPad X13 Gen 2 on Void Linux, runit, Xorg and AwesomeWM,
+assembled by hand over two weeks, whose purpose was battery life. That machine
+draws 6-8 W idle and 12 W with a browser and Bluetooth audio. A full KDE session
+would not reach those figures, because the desktop's own daemons, indexers and
+compositor keep waking the CPU.
+
+candy-shop has no battery. Nothing here is bought with that complexity, so none
+of it is paid for. Before making this desktop more elaborate, note that its
+plainness is deliberate and the alternative was already tried on hardware that
+needed it.
+
 ## General Rule
 
 ```text
